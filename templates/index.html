@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NLP Web App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>NLP Web App</h1>
+    <form id="nlp-form">
+        <textarea id="text-input" rows="10" cols="50" placeholder="Enter text here..."></textarea><br>
+        <button type="button" onclick="analyzeText()">Analyze</button>
+    </form>
+    <pre id="output"></pre>
+
+    <script>
+        function analyzeText() {
+            const text = document.getElementById('text-input').value;
+            fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: text })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+            });
+        }
+    </script>
+</body>
+</html>
